@@ -32,12 +32,12 @@ void Transform::Init(_INT32 width, _INT32 height)
 	_transform = _worldTransform * _viewTransform * _perspectiveTransform;
 }
 
-void Transform::Init(Camera* camera, _INT32 width, _INT32 height, Matrix4f wordTransform)
+void Transform::Init(Camera* camera, _INT32 width, _INT32 height, Matrix4f worldTransform)
 {
 	_FLOAT aspect = (_FLOAT)width / (_FLOAT)height;
 	_width = width;
 	_height = height;
-	_worldTransform = wordTransform;
+	_worldTransform = worldTransform;
 	_viewTransform = camera->GetViewTransformMatrix();
 	_perspectiveTransform = camera->GetPerspectiveTransformMarix();
 	_transform = _worldTransform * _viewTransform * _perspectiveTransform;

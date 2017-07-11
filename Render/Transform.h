@@ -25,7 +25,7 @@ public:
 
 	void Init(_INT32 width, _INT32 height);
 
-	void Init(Camera* camera, _INT32 width, _INT32 height, Matrix4f wordTransform);
+	void Init(Camera* camera, _INT32 width, _INT32 height, Matrix4f worldTransform);
 
 	Vector4f ApplyTransform(const Vector4f& v) const;
 
