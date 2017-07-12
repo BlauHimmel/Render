@@ -6,20 +6,21 @@
 #include "Device.h"
 #include "Camera.h"
 #include "Window.h"
+#include "Image.h"
 #include <iostream>
 
 Mesh mesh = Mesh("Box", 8);
 
 void InitMesh()
 {
-	mesh._vertices[0] = Vertex(Vector4f(1, -1, 1, 1), 0, 0, Color(1.0f, 0.2f, 0.2f));
-	mesh._vertices[1] = Vertex(Vector4f(-1, -1, 1, 1), 0, 1, Color(0.2f, 1.0f, 0.2f));
-	mesh._vertices[2] = Vertex(Vector4f(-1, 1, 1, 1), 1, 1, Color(0.2f, 0.2f, 1.0f));
-	mesh._vertices[3] = Vertex(Vector4f(1, 1, 1, 1), 1, 0, Color(1.0f, 0.2f, 1.0f));
-	mesh._vertices[4] = Vertex(Vector4f(1, -1, -1, 1), 0, 0, Color(1.0f, 1.0f, 0.2f));
+	mesh._vertices[0] = Vertex(Vector4f( 1, -1,  1, 1), 0, 0, Color(1.0f, 0.2f, 0.2f));
+	mesh._vertices[1] = Vertex(Vector4f(-1, -1,  1, 1), 0, 1, Color(0.2f, 1.0f, 0.2f));
+	mesh._vertices[2] = Vertex(Vector4f(-1,  1,  1, 1), 1, 1, Color(0.2f, 0.2f, 1.0f));
+	mesh._vertices[3] = Vertex(Vector4f( 1,  1,  1, 1), 1, 0, Color(1.0f, 0.2f, 1.0f));
+	mesh._vertices[4] = Vertex(Vector4f( 1, -1, -1, 1), 0, 0, Color(1.0f, 1.0f, 0.2f));
 	mesh._vertices[5] = Vertex(Vector4f(-1, -1, -1, 1), 0, 1, Color(0.2f, 1.0f, 1.0f));
-	mesh._vertices[6] = Vertex(Vector4f(-1, 1, -1, 1), 1, 1, Color(1.0f, 0.3f, 0.3f));
-	mesh._vertices[7] = Vertex(Vector4f(1, 1, -1, 1), 1, 0, Color(0.2f, 1.0f, 0.3f));
+	mesh._vertices[6] = Vertex(Vector4f(-1,  1, -1, 1), 1, 1, Color(1.0f, 0.3f, 0.3f));
+	mesh._vertices[7] = Vertex(Vector4f( 1,  1, -1, 1), 1, 0, Color(0.2f, 1.0f, 0.3f));
 }
 
 
@@ -29,7 +30,7 @@ void DrawPlane(Device& device, _INT32 a, _INT32 b, _INT32 c, _INT32 d) {
 	Vertex p2 = mesh._vertices[b];
 	Vertex p3 = mesh._vertices[c];
 	Vertex p4 = mesh._vertices[d];
-
+	
 	p1._u = 0; 
 	p1._v = 0;
 
@@ -41,7 +42,7 @@ void DrawPlane(Device& device, _INT32 a, _INT32 b, _INT32 c, _INT32 d) {
 
 	p4._u = 1; 
 	p4._v = 0;
-
+	
 	device.RenderTriangle(p1, p2, p3);
 	device.RenderTriangle(p3, p4, p1);
 }
@@ -65,16 +66,32 @@ void DrawBox(Device& device, _FLOAT theta, _FLOAT x, _FLOAT y)
 
 void InitTexture(Device& device)
 {
-	static _UINT32 texture[256][256];
-	for (auto i = 0; i < 256; i++)
+	Image* tga = Image::LoadTGA("Texture2.tga");
+	
+	static _UINT32 texture[200][200];
+	for (auto i = 0; i < tga->Height(); i++)
 	{
-		for (auto j = 0; j < 256; j++)
+		for (auto j = 0; j < tga->Width(); j++)
 		{
+			Color color = tga->GetPixel(i, j);
 			_INT32 x = i / 32, y = j / 32;
-			texture[i][j] = ((x + y) & 1) ? 0xffffff : 0x3fbc1f;
+			texture[i][j] = ((_INT32)(color._r * 255.0f) << 16) | 
+				((_INT32)(color._g * 255.0f) << 8) | 
+				((_INT32)(color._b * 255.0f) << 0);
 		}
 	}
-	device.SetTexture(texture, 256 * 4 * BYTE_SIZE, 256, 256);
+
+	//static _UINT32 texture[256][256];
+	//for (auto i = 0; i < 256; i++)
+	//{
+	//	for (auto j = 0; j < 256; j++)
+	//	{
+	//		_INT32 x = i / 32, y = j / 32;
+	//		texture[i][j] = ((x + y) & 1) ? 0xffffff : 0x3fbc1f;
+	//	}
+	//}
+
+	device.SetTexture(texture, tga->Width() * 4 * BYTE_SIZE, tga->Width(), tga->Height());
 }
 
 void CameraPrepare(Device& device, Vector4f& position)
@@ -83,7 +100,7 @@ void CameraPrepare(Device& device, Vector4f& position)
 	Vector4f direction = target - position;
 	Vector4f up = Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
 	_FLOAT aspect = (_FLOAT)device._transform->_width / (_FLOAT)device._transform->_height;
-	Camera camera = Camera(position, direction, up, aspect, HALF_PI, 1.0f, 500.0f);
+	Camera camera = Camera(position, direction, up, aspect, HALF_PI * 0.66f, 1.0f, 500.0f);
 	device._transform->_viewTransform = camera.GetViewTransformMatrix();
 	device._transform->_perspectiveTransform = camera.GetPerspectiveTransformMarix();
 	device._transform->UpdateTransform();

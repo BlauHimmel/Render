@@ -44,8 +44,8 @@ Vertex Interpolate(Vertex& v1, Vertex& v2, _FLOAT t)
 	Vertex ans = Vertex(
 		Interpolate(v1._position, v2._position, t),
 		Interpolate(v1._u, v2._u, t),
-		Interpolate(v1._v,v2._v,t),
-		Interpolate(v1._color,v2._color,t)
+		Interpolate(v1._v, v2._v,t),
+		Interpolate(v1._color, v2._color,t)
 		);
 	ans._deepz = Interpolate(v1._deepz, v2._deepz, t);
 	return ans;
@@ -96,5 +96,4 @@ void Vertex::Init()
 	_deepz = inverse;
 	_u *= inverse;
 	_v *= inverse;
-	_color = _color * inverse;
 }

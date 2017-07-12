@@ -24,6 +24,7 @@ using _INT32	=				int;
 using _UINT32	=				unsigned int;
 using _CHAR		=				char;
 using _BYTE		=				char;
+using _UBYTE	=				unsigned char;
 using _PSTR		=				char*;
 using _PBYTE	=				char*;
 using _PVOID	=				void*;

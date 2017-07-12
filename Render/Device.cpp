@@ -217,7 +217,7 @@ void Device::DrawScanline(Scanline& scanline)
 				zBuffer[x] = deepz;
 				if (_renderState & RENDER_STATE_COLOR)
 				{
-					Color color = scanline._start._color * w;
+					Color color = scanline._start._color;
 					_INT32 R = (_INT32)(color._r * 255.0f);
 					_INT32 G = (_INT32)(color._g * 255.0f);
 					_INT32 B = (_INT32)(color._b * 255.0f);
@@ -234,7 +234,7 @@ void Device::DrawScanline(Scanline& scanline)
 				}
 			}
 		}
-		scanline._start = scanline._start + scanline._step;	
+ 		scanline._start = scanline._start + scanline._step;	
 	}
 }
 
@@ -284,7 +284,6 @@ void Device::RenderTriangle(Vertex& v1, Vertex& v2, Vertex& v3)
 		triangles._vertex1.Init();
 		triangles._vertex2.Init();
 		triangles._vertex3.Init();
-		triangles.Sort();
 
 		_INT32 n = Trapezoid::GetTrapezoids(triangles, trapezoids);
 
@@ -292,6 +291,7 @@ void Device::RenderTriangle(Vertex& v1, Vertex& v2, Vertex& v3)
 		{
 			RenderTrapezoid(trapezoids[0]);
 		}
+
 		if (n >= 2)
 		{
 			RenderTrapezoid(trapezoids[1]);

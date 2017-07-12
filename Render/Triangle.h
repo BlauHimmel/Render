@@ -21,8 +21,6 @@ public:
 
 	bool IsTriangle() const;
 
-	void Sort();
-
 };
 
 #endif

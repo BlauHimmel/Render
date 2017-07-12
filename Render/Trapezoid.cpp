@@ -20,7 +20,20 @@ _INT32 Trapezoid::GetTrapezoids(const Triangle& triangle, Trapezoid* trapezoids)
 	Vertex v2 = triangle._vertex2;
 	Vertex v3 = triangle._vertex3;
 
-	_FLOAT x, k;
+	if (v1._position._y > v2._position._y)
+	{
+		Swap(v1, v2);
+	}
+
+	if (v1._position._y > v3._position._y)
+	{
+		Swap(v1, v3);
+	}
+
+	if (v2._position._y > v3._position._y)
+	{
+		Swap(v2, v3);
+	}
 
 	if (triangle.IsTriangle() == false)
 	{
@@ -40,8 +53,8 @@ _INT32 Trapezoid::GetTrapezoids(const Triangle& triangle, Trapezoid* trapezoids)
 		trapezoids[0]._top = v1._position._y;
 		trapezoids[0]._bottom = v3._position._y;
 		trapezoids[0]._left._vertex1 = v1;
-		trapezoids[0]._left._vertex2 = v2;
-		trapezoids[0]._right._vertex1 = v1;
+		trapezoids[0]._left._vertex2 = v3;
+		trapezoids[0]._right._vertex1 = v2;
 		trapezoids[0]._right._vertex2 = v3;
 		return 1;
 	}
@@ -62,7 +75,7 @@ _INT32 Trapezoid::GetTrapezoids(const Triangle& triangle, Trapezoid* trapezoids)
 		trapezoids[0]._left._vertex2 = v2;
 		trapezoids[0]._right._vertex1 = v1;
 		trapezoids[0]._right._vertex2 = v3;
-		return 0;
+		return 1;
 	}
 
 	trapezoids[0]._top = v1._position._y;
@@ -70,6 +83,8 @@ _INT32 Trapezoid::GetTrapezoids(const Triangle& triangle, Trapezoid* trapezoids)
 	trapezoids[1]._top = v2._position._y;
 	trapezoids[1]._bottom = v3._position._y;
 
+
+	_FLOAT x, k;
 	k = (v3._position._y - v1._position._y) / (v2._position._y - v1._position._y);
 	x = (v2._position._x - v1._position._x) * k + v1._position._x;
 

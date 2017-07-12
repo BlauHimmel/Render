@@ -22,19 +22,3 @@ bool Triangle::IsTriangle() const
 	}
 	return true;
 }
-
-void Triangle::Sort()
-{
-	if (_vertex1._position._y > _vertex2._position._y)
-	{
-		Swap(_vertex1, _vertex2);
-	}
-	if (_vertex1._position._y > _vertex3._position._y)
-	{
-		Swap(_vertex1, _vertex3);
-	}
-	if (_vertex2._position._y > _vertex3._position._y)
-	{
-		Swap(_vertex2, _vertex3);
-	}
-}

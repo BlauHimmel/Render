@@ -408,7 +408,7 @@ bool Vector4f::operator == (const Vector4f& other) const
 
 Vector4f Interpolate(Vector4f& v1, Vector4f& v2, _FLOAT t)
 {
-	return Vector4f(Interpolate(v1._x, v2._x, t), Interpolate(v1._y, v2._y, t), Interpolate(v1._z, v2._z, t), 1.0f);
+	return Vector4f(Interpolate(v1._x, v2._x, t), Interpolate(v1._y, v2._y, t), Interpolate(v1._z, v2._z, t), Interpolate(v1._w, v2._w, t));
 }
 
 Vector3f Interpolate(Vector3f& v1, Vector3f& v2, _FLOAT t)
